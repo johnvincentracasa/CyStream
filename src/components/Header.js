@@ -9,8 +9,8 @@ function Header() {
         CyStream
       </Link>
       <div className="right menu">
-        <Link to="/streams/new" className="item">
-          New Stream
+        <Link to="/" className="item">
+          Streams
         </Link>
         <GoogleAuth />
       </div>
