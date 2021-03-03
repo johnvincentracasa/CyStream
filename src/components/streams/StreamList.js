@@ -8,7 +8,37 @@ class StreamList extends React.Component {
     this.props.fetchStreams();
   }
 
-  renderCreateStream() {
+  renderAdmin(stream) {
+    if (stream.userId === this.props.currentUserId) {
+      return (
+        <div className="right floated content">
+          <Link to={`/streams/edit/${stream.id}`} className="ui button primary">
+            Edit
+          </Link>
+          <Link to={`/streams/delete/${stream.id}`} className="ui button negative">
+            Delete
+          </Link>
+        </div>
+      );
+    }
+  }
+
+  renderList() {
+    return this.props.streams.map((stream) => {
+      return (
+        <div className="item" key={stream.id}>
+          {this.renderAdmin(stream)}
+          <i className="large middle aligned icon camera" />
+          <div className="content">
+            {stream.title}
+            <div className="description">{stream.description}</div>
+          </div>
+        </div>
+      );
+    });
+  }
+
+  renderCreate() {
     if (this.props.isSignedIn) {
       return (
         <div style={{ textAlign: 'right' }}>
@@ -20,42 +50,12 @@ class StreamList extends React.Component {
     }
   }
 
-  renderAdmin(stream) {
-    if (stream.userId === this.props.currentUserId) {
-      return (
-        <div className="ui content right floated">
-          <Link to={`/streams/edit/${stream.id}`} className="ui button primary">
-            Edit
-          </Link>
-
-          <button className="ui button negative">Delete</button>
-        </div>
-      );
-    }
-  }
-
-  renderStreams() {
-    return this.props.streams.map((stream) => {
-      return (
-        <div className="item" key={stream.id}>
-          {this.renderAdmin(stream)}
-
-          <div className="content">
-            <div className="header">{stream.title}</div>
-            <div className="description">{stream.description}</div>
-          </div>
-        </div>
-      );
-    });
-  }
-
   render() {
     return (
-      <div className="ui list celled ">
-        <h2 className="ui header ">List of Streams</h2>
-        {this.renderStreams()}
-        <br />
-        {this.renderCreateStream()}
+      <div>
+        <h2>Streams</h2>
+        <div className="ui celled list">{this.renderList()}</div>
+        {this.renderCreate()}
       </div>
     );
   }
